@@ -1,2 +1,2 @@
-# Recommendation-System-Notebook
-This is a file contains my learning notebooks, the relative thinking of some algorithms and some question lists.
+Chap-2 Overview
+This branch is created for the overview course of the RS006 class.

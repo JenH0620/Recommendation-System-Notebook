@@ -5,7 +5,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.datasets import load_digits 
 #from sklearn.svm import SVC
 #from sklearn.linear_model import LogisticRegression
-from sklearn import metrics
+#from sklearn import metrics
 from sklearn.tree import DecisionTreeClassifier
 
 # upload data

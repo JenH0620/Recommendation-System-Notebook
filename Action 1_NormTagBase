@@ -44,8 +44,6 @@ class NormTagBased():
     def NormaliseData(self):
         # using Z-Score
         ss = preprocessing.StandardScaler()
-        #using max-min
-        #ss = preprocessing.MinMaxScaler()
         self.ss.fit_transform()
 
 

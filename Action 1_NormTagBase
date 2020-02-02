@@ -1,12 +1,12 @@
-# 使用SimpleTagBased算法对Delicious2K数据进行推荐
+# 使用NormTagBased算法对Delicious2K数据进行推荐
 # 原始数据集：https://grouplens.org/datasets/hetrec-2011/
 # 数据格式：userID     bookmarkID     tagID     timestamp
 import random
 import math
 import operator
-from sklearn import preprocessing
 
-class NormTagBased():
+
+class SimpleTagBased():
     # 构造函数
     def __init__(self, filename):
         self.filename = filename
@@ -39,15 +39,6 @@ class NormTagBased():
         print("数据集大小为 %d." % (lineNum))
         print("设置tag的人数 %d." % (len( self.records )))
         print("数据加载完成\n")
-
-    # 将数据集高斯分布归一化
-    def NormaliseData(self):
-        # using Z-Score
-        ss = preprocessing.StandardScaler()
-        #using max-min
-        #ss = preprocessing.MinMaxScaler()
-        self.ss.fit_transform()
-
 
     # 将数据集拆分为训练集和测试集
     def randomlySplitData(self, ratio, seed=100):
@@ -124,15 +115,18 @@ class NormTagBased():
         # 对Item进行打分，分数为所有的（用户对某标签使用的次数 wut, 乘以 商品被打上相同标签的次数 wti）之和
         tagged_items = self.user_items[user]
         for tag, wut in self.user_tags[user].items():
-            # print(self.user_tags[user].items())
+            sum_sut = sum(self.user_tags[user]) #normtagbased
+            #print(sum_sut)
+            #print(self.user_tags[user].items())
             for item, wti in self.tag_items[tag].items():
+                sum_sti = sum(self.tag_items[tag]) #normtagbased
                 if item in tagged_items:
                     continue
-                # print('wut = %s, wti = %s' %(wut, wti))
+                #print('wut = %s, wti = %s' %(wut, wti))
                 if item not in recommend_items:
-                    recommend_items[item] = wut * wti
+                    recommend_items[item] = wut/sum_sut * wti/sum_sti #normtagbased
                 else:
-                    recommend_items[item] += wut * wti
+                    recommend_items[item] += wut/sum_sut * wti/sum_sti #normtagbased
         return sorted( recommend_items.items(), key=operator.itemgetter( 1 ), reverse=True )[0:N]
 
     # 使用测试集，对推荐结果进行评估
@@ -145,4 +139,4 @@ class NormTagBased():
 
 
 if __name__ == '__main__':
-    stb = NormTagBased( "/Users/huangzhan/Documents/开课吧/RS/Chap2.2-用户画像/user_taggedbookmarks-timestamps.dat" )
+    stb = SimpleTagBased( "/Users/huangzhan/Documents/开课吧/RS/Chap2.2-用户画像/user_taggedbookmarks-timestamps.dat" )

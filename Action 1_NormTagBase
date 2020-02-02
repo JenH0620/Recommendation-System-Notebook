@@ -115,24 +115,25 @@ class NormTagBased():
         # 对Item进行打分，分数为所有的（用户对某标签使用的次数 wut, 乘以 商品被打上相同标签的次数 wti）之和
         tagged_items = self.user_items[user]
         for tag, wut in self.user_tags[user].items():
-            sum_sut = sum(self.user_tags[user]) #normtagbased
+            #sum_sut = sum(self.user_tags[user]) #normtagbased
             len_sut = len(self.user_tags[user]) #normtagbased
             #print(sum_sut)
             #print(len_sut)
             #print(self.user_tags[user].items())
             for item, wti in self.tag_items[tag].items():
-                sum_sti = sum(self.tag_items[tag]) #normtagbased
-                #len_sti = len(self.tag_items[tag]) #normtagbased
+                #sum_sti = sum(self.tag_items[tag]) #normtagbased
+                len_sti = len(self.tag_items[tag]) #normtagbased
                 #print( sum_sti )
                 #print( len_sti )
                 if item in tagged_items:
                     continue
                 #print('wut = %s, wti = %s' %(wut, wti))
                 if item not in recommend_items:
-                    recommend_items[item] = wut/sum_sut * wti/sum_sti #normtagbased
-                    recommend_items[item] = wut / sum_sut * wti / sum_sti  # normtagbased
+                    #recommend_items[item] = wut/sum_sut * wti/sum_sti #normtagbased
+                    recommend_items[item] = wut / len_sut * wti / len_sti  # normtagbased
                 else:
-                    recommend_items[item] += wut/sum_sut * wti/sum_sti #normtagbased
+                    #recommend_items[item] += wut/sum_sut * wti/sum_sti #normtagbased
+                    recommend_items[item] += wut/len_sut * wti/len_sti #normtagbased
         return sorted( recommend_items.items(), key=operator.itemgetter( 1 ), reverse=True )[0:N]
 
     # 使用测试集，对推荐结果进行评估

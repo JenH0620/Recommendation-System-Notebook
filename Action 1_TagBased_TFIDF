@@ -17,7 +17,7 @@ class TagBased_TFIDF():
 
     # 数据加载
     def loadData(self):
-        print("开始数据加载...")
+        print( "开始数据加载..." )
         filename = self.filename
         # 保存了用户对item的tag
         self.records = {}
@@ -36,9 +36,9 @@ class TagBased_TFIDF():
             self.records[uid].setdefault( iid, [] )
             self.records[uid][iid].append( tag )
         fi.close()
-        print("数据集大小为 %d." % (lineNum))
-        print("设置tag的人数 %d." % (len( self.records )))
-        print("数据加载完成\n")
+        print( "数据集大小为 %d." % (lineNum) )
+        print( "设置tag的人数 %d." % (len( self.records )) )
+        print( "数据加载完成\n" )
 
     # 将数据集拆分为训练集和测试集
     def randomlySplitData(self, ratio, seed=100):
@@ -57,7 +57,7 @@ class TagBased_TFIDF():
                     self.train[u].setdefault( i, [] )
                     for t in self.records[u][i]:
                         self.train[u][i].append( t )
-        print("训练集样本数 %d, 测试集样本数 %d" % (len( self.train ), len( self.test )))
+        print( "训练集样本数 %d, 测试集样本数 %d" % (len( self.train ), len( self.test )) )
 
     # 使用训练集，初始化user_tags, tag_items, user_items
     def initStat(self):
@@ -75,9 +75,9 @@ class TagBased_TFIDF():
                     self._addValueToMat( self.tag_items, tag, i, 1 )
                     # 用户和item的关系
                     self._addValueToMat( self.user_items, u, i, 1 )
-        print("user_tags, tag_items, user_items初始化完成.")
-        print("user_tags大小 %d, tag_items大小 %d, user_items大小 %d" % (
-        len( self.user_tags ), len( self.tag_items ), len( self.user_items )))
+        print( "user_tags, tag_items, user_items初始化完成." )
+        print( "user_tags大小 %d, tag_items大小 %d, user_items大小 %d" % (
+            len( self.user_tags ), len( self.tag_items ), len( self.user_items )) )
 
     # 设置矩阵 mat[index, item] = 1
     def _addValueToMat(self, mat, index, item, value=1):
@@ -115,26 +115,26 @@ class TagBased_TFIDF():
         # 对Item进行打分，分数为所有的（用户对某标签使用的次数 wut, 乘以 商品被打上相同标签的次数 wti）之和
         tagged_items = self.user_items[user]
         for tag, wut in self.user_tags[user].items():
-            para_sut = len(self.user_tags[user]) #tagbased_TFIDF
-            #print(para_sut)
-            #print(self.user_tags[user].items())
+            para_sut = math.log( len( self.user_tags[user] ) + 1, )  # tagbased_TFIDF
+            # print(para_sut)
+            # print(self.user_tags[user].items())
             for item, wti in self.tag_items[tag].items():
                 if item in tagged_items:
                     continue
-                #print('wut = %s, wti = %s' %(wut, wti))
+                # print('wut = %s, wti = %s' %(wut, wti))
                 if item not in recommend_items:
-                    recommend_items[item] = wut / para_sut * wti   #tagbased_TFIDF
+                    recommend_items[item] = wut / para_sut * wti  # tagbased_TFIDF
                 else:
-                    recommend_items[item] += wut / para_sut * wti #tagbased_TFIDF
+                    recommend_items[item] += wut / para_sut * wti  # tagbased_TFIDF
         return sorted( recommend_items.items(), key=operator.itemgetter( 1 ), reverse=True )[0:N]
 
     # 使用测试集，对推荐结果进行评估
     def testRecommend(self):
-        print("推荐结果评估")
-        print("%3s %10s %10s" % ('N', "精确率", '召回率'))
+        print( "推荐结果评估" )
+        print( "%3s %10s %10s" % ('N', "精确率", '召回率') )
         for n in [5, 10, 20, 40, 60, 80, 100]:
             precision, recall = self.precisionAndRecall( n )
-            print("%3d %10.3f%% %10.3f%%" % (n, precision * 100, recall * 100))
+            print( "%3d %10.3f%% %10.3f%%" % (n, precision * 100, recall * 100) )
 
 
 if __name__ == '__main__':

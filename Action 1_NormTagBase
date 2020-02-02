@@ -6,7 +6,7 @@ import math
 import operator
 
 
-class SimpleTagBased():
+class NormTagBased():
     # 构造函数
     def __init__(self, filename):
         self.filename = filename
@@ -116,15 +116,21 @@ class SimpleTagBased():
         tagged_items = self.user_items[user]
         for tag, wut in self.user_tags[user].items():
             sum_sut = sum(self.user_tags[user]) #normtagbased
+            len_sut = len(self.user_tags[user]) #normtagbased
             #print(sum_sut)
+            #print(len_sut)
             #print(self.user_tags[user].items())
             for item, wti in self.tag_items[tag].items():
                 sum_sti = sum(self.tag_items[tag]) #normtagbased
+                #len_sti = len(self.tag_items[tag]) #normtagbased
+                #print( sum_sti )
+                #print( len_sti )
                 if item in tagged_items:
                     continue
                 #print('wut = %s, wti = %s' %(wut, wti))
                 if item not in recommend_items:
                     recommend_items[item] = wut/sum_sut * wti/sum_sti #normtagbased
+                    recommend_items[item] = wut / sum_sut * wti / sum_sti  # normtagbased
                 else:
                     recommend_items[item] += wut/sum_sut * wti/sum_sti #normtagbased
         return sorted( recommend_items.items(), key=operator.itemgetter( 1 ), reverse=True )[0:N]
@@ -139,4 +145,4 @@ class SimpleTagBased():
 
 
 if __name__ == '__main__':
-    stb = SimpleTagBased( "/Users/huangzhan/Documents/开课吧/RS/Chap2.2-用户画像/user_taggedbookmarks-timestamps.dat" )
+    stb = NormTagBased( "/Users/huangzhan/Documents/开课吧/RS/Chap2.2-用户画像/user_taggedbookmarks-timestamps.dat" )

@@ -1,4 +1,4 @@
-# 使用NormTagBased算法对Delicious2K数据进行推荐
+# 使用SimpleTagBased算法对Delicious2K数据进行推荐
 # 原始数据集：https://grouplens.org/datasets/hetrec-2011/
 # 数据格式：userID     bookmarkID     tagID     timestamp
 import random
@@ -44,6 +44,8 @@ class NormTagBased():
     def NormaliseData(self):
         # using Z-Score
         ss = preprocessing.StandardScaler()
+        #using max-min
+        #ss = preprocessing.MinMaxScaler()
         self.ss.fit_transform()
 
 

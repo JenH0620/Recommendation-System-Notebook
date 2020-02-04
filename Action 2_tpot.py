@@ -54,7 +54,7 @@ tpot = TPOTClassifier(generations=5, population_size=20, verbosity=2)
 tpot.fit(X_train, y_train)
 print(tpot.score(X_test, y_test))
 
-# 决策树tpot预测
+# tpot预测
 pred_labels = tpot.predict(test_features)
 
 # 得到tpot准确率

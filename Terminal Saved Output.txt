@@ -1,0 +1,49 @@
+Last login: Thu Jun 18 16:25:12 on ttys001
+(base) huangzhandeMacBook-Pro:~ huangzhan$ ls
+Applications	Downloads	Music		lemur-code
+Desktop		Library		Pictures	nltk_data
+Documents	Movies		Public		test2.m
+(base) huangzhandeMacBook-Pro:~ huangzhan$ cd Documents/开课吧/RS/Chap3.6-Learning\ to\ Rank与Airbnb个性化推荐/L10/
+(base) huangzhandeMacBook-Pro:L10 huangzhan$ java -jar RankLib-patched.jar -test MQ2008/Fold1/test.txt -metric2T NDCG@10 -idv output/baseline.ndcg.txt
+
+[+] General Parameters:
+Model file:	
+Feature normalization: No
+Test metric:	NDCG@10
+Reading feature file [MQ2008/Fold1/test.txt]... [Done.]            
+(156 ranked lists, 2874 entries read)
+NDCG@10 on test data: 0.3257
+Per-ranked list performance saved to: output/baseline.ndcg.txt
+(base) huangzhandeMacBook-Pro:L10 huangzhan$ RankNet：java -jar RankLib-patched.jar -train MQ2008/Fold1/train.txt -test MQ2008/Fold1/test.txt -validate MQ2008/Fold1/vali.txt -ranker 1 -metric2t NDCG@10 -metric2T NDCG@10 -save model_ranknet.txt
+-bash: RankNet：java: command not found
+(base) huangzhandeMacBook-Pro:L10 huangzhan$ 
+(base) huangzhandeMacBook-Pro:L10 huangzhan$ java -jar RankLib-patched.jar -train MQ2008/Fold1/train.txt -test MQ2008/Fold1/test.txt -validate MQ2008/Fold1/vali.txt -ranker 1 -metric2t NDCG@10 -metric2T NDCG@10 -save model_ranknet.txt
+
+[+] General Parameters:
+Training data:	MQ2008/Fold1/train.txt
+Test data:	MQ2008/Fold1/test.txt
+Validation data:	MQ2008/Fold1/vali.txt
+Feature vector representation: Dense.
+Ranking method:	RankNet
+Feature description file:	Unspecified. All features will be used.
+Train metric:	NDCG@10
+Test metric:	NDCG@10
+Feature normalization: No
+Model file: model_ranknet.txt
+
+[+] RankNet's Parameters:
+No. of epochs: 100
+No. of hidden layers: 1
+No. of hidden nodes per layer: 10
+Learning rate: 5.0E-5
+
+Error in FeatureManager::readInput(): java.io.FileNotFoundException: MQ2008/Fold1/train.txt (No such file or directory)
+(base) huangzhandeMacBook-Pro:L10 huangzhan$ java -jar RankLib-patched.jar -load model_ranknet.txt -test MQ2008/Fold1/test.txt -metric2T NDCG@10 -idv output/ranknet.ndcg.txt
+
+[+] General Parameters:
+Model file:	model_ranknet.txt
+Feature normalization: No
+Test metric:	NDCG@10
+Error in RankerFactory.load(): java.io.FileNotFoundException: model_ranknet.txt (No such file or directory)
+(base) huangzhandeMacBook-Pro:L10 huangzhan$ java -cp RankLib-patched.jar ciir.umass.edu.eval.Analyzer -all output/ -base baseline.ndcg.txt > analysis.txt
+(base) huangzhandeMacBook-Pro:L10 huangzhan$ 
